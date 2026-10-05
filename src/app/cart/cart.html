@@ -1,0 +1,33 @@
+<div class="cart">
+  <h2>
+  KOSZYK
+  <button mat-icon-button aria-label="Koszyk">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+</h2>
+
+
+  @if (cart().length === 0) {
+    <p class="empty">Koszyk jest pusty.</p>
+  } @else {
+    <div class="products">
+      @for (product of cart(); track $index) {
+        <div class="cart-item">
+          <span>{{ product.name }}</span>
+          <span>{{ product.price }} zł</span>
+
+          <button (click)="removeProduct($index)">
+            Usuń
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="total">
+      <strong>RAZEM</strong>
+      <strong>{{ getTotal() }} zł</strong>
+    </div>
+  }
+</div>
