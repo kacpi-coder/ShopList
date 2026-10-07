@@ -1,11 +1,34 @@
-<app-product-list
-  [products]="products"
-  (addToCart)="addToCart($event)">
-</app-product-list>
+<header class="header">
 
-<hr>
+  <a routerLink="/" class="logo">
+    SKLEP
+  </a>
 
-<app-cart
-  [cart]="cart"
-  (removeFromCart)="removeFromCart($event)">
-</app-cart>
+  <nav class="navigation">
+
+    <a
+      routerLink="/"
+      routerLinkActive="active">
+      Strona główna
+    </a>
+
+    <a
+      routerLink="/lista-produktow"
+      routerLinkActive="active">
+      Produkty
+    </a>
+
+    <a
+      routerLink="/koszyk"
+      routerLinkActive="active">
+      Koszyk
+    </a>
+
+    <a routerLink="/payment-form" routerLinkActive="active"> Płatność</a>
+  </nav>
+
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,14 @@
+<p>payment-form works!</p>
+
+<form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
+    Imię: <input type='text' formControlName='firstName' required><br>
+    Nazwisko: <input type='text' formControlName='lastName' required><br>
+    Adres: <input type='text' formControlName='adres' required><br>
+    <label>
+        <input type="radio" formControlName="paymentMethod" value="blik"> Blik
+        <input type="radio" formControlName="paymentMethod" value="card"> Card
+        <input type="radio" formControlname="paymentMethod" vlaue="transfer"> Przelew
+    </label> <br>
+    <button type="submit">Wyślij</button>
+</form>
+

@@ -1,9 +1,25 @@
 <div class="product">
-  <h3>{{ product()?.name }}</h3>
 
-  <p>Cena: {{ product()?.price }} zł</p>
+  <h3>
+    {{ product()?.name }}
+  </h3>
 
-  <button (click)="addToCart.emit(product())">
-    Dodaj do koszyka
-  </button>
+  <p>
+    Cena: {{ product()?.price }} zł
+  </p>
+
+  <div class="buttons">
+
+    <button
+      (click)="addToCart.emit(product())">
+      Dodaj do koszyka
+    </button>
+
+    <a
+      [routerLink]="['/produkt', product()?.id]">
+      Szczegóły
+    </a>
+
+  </div>
+
 </div>

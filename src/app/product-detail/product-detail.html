@@ -1,0 +1,89 @@
+@if (product) {
+
+  <div class="product-detail">
+
+    <div class="product-image">
+
+      <img
+        [src]="product.image"
+        [alt]="product.name">
+
+    </div>
+
+    <div class="product-info">
+
+      <h1>
+        {{ product.name }}
+      </h1>
+
+      <div class="rating">
+
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+
+          <span>
+            {{ star <= product.rating ? '★' : '☆' }}
+          </span>
+
+        }
+
+      </div>
+
+      <p class="description">
+        {{ product.description }}
+      </p>
+
+      <p class="price">
+        {{ product.price }} zł
+      </p>
+
+   <button (click)="addToCart()">
+  Dodaj do koszyka
+</button>
+
+
+    </div>
+
+  </div>
+
+
+  <section class="other-products">
+
+    <h2>
+      Pozostałe produkty
+    </h2>
+
+    <div class="carousel">
+
+      @for (item of otherProducts; track item.id) {
+
+        <a
+          [routerLink]="['/produkt', item.id]"
+          class="other-product">
+
+          <h3>
+            {{ item.name }}
+          </h3>
+
+          <p>
+            {{ item.price }} zł
+          </p>
+
+        </a>
+
+      }
+
+    </div>
+
+  </section>
+
+} @else {
+
+  <div class="not-found">
+
+    <h2>
+      Nie znaleziono produktu
+    </h2>
+
+  </div>
+
+}

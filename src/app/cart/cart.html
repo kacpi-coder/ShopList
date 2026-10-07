@@ -1,33 +1,100 @@
 <div class="cart">
+
   <h2>
-  KOSZYK
-  <button mat-icon-button aria-label="Koszyk">
-    <mat-icon>shopping_cart</mat-icon>
-  </button>
-</h2>
+    KOSZYK
 
+    <button mat-icon-button aria-label="Koszyk">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+  </h2>
 
-  @if (cart().length === 0) {
-    <p class="empty">Koszyk jest pusty.</p>
+  @if (cart.length === 0) {
+
+    <p class="empty">
+      Koszyk jest pusty.
+    </p>
+
   } @else {
-    <div class="products">
-      @for (product of cart(); track $index) {
-        <div class="cart-item">
-          <span>{{ product.name }}</span>
-          <span>{{ product.price }} zł</span>
 
-          <button (click)="removeProduct($index)">
+    <div class="products">
+
+      @for (product of cart; track product.id) {
+
+        <div class="cart-item">
+
+          <div class="product-info">
+
+            <strong>
+              {{ product.name }}
+            </strong>
+
+            <span>
+              {{ product.price }} zł / szt.
+            </span>
+
+          </div>
+
+          <div class="quantity">
+
+            <button
+              mat-icon-button
+              (click)="decreaseQuantity($index)"
+              aria-label="Zmniejsz ilość">
+
+              <mat-icon>
+                remove
+              </mat-icon>
+
+            </button>
+
+            <span class="quantity-number">
+              {{ product.quantity }} szt.
+            </span>
+
+            <button
+              mat-icon-button
+              (click)="increaseQuantity($index)"
+              aria-label="Zwiększ ilość">
+
+              <mat-icon>
+                add
+              </mat-icon>
+
+            </button>
+
+          </div>
+
+          <strong class="product-total">
+            {{ product.price * product.quantity }} zł
+          </strong>
+
+          <button
+            mat-button
+            color="warn"
+            (click)="removeProduct($index)">
             Usuń
           </button>
+
         </div>
+
       }
+
     </div>
 
     <div class="separator"></div>
 
     <div class="total">
-      <strong>RAZEM</strong>
-      <strong>{{ getTotal() }} zł</strong>
+
+      <strong>
+        RAZEM
+      </strong>
+
+      <strong>
+        {{ getTotal() }} zł
+      </strong>
+
     </div>
+
   }
+
 </div>
