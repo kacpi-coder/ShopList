@@ -1,14 +1,132 @@
-<p>payment-form works!</p>
 
-<form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
-    Imię: <input type='text' formControlName='firstName' required><br>
-    Nazwisko: <input type='text' formControlName='lastName' required><br>
-    Adres: <input type='text' formControlName='adres' required><br>
+@if (!orderSubmitted) {
+  <form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
+
+    <h2>Dane do zamówienia</h2>
+
     <label>
-        <input type="radio" formControlName="paymentMethod" value="blik"> Blik
-        <input type="radio" formControlName="paymentMethod" value="card"> Card
-        <input type="radio" formControlname="paymentMethod" vlaue="transfer"> Przelew
-    </label> <br>
-    <button type="submit">Wyślij</button>
-</form>
+      Imię:
+      <input type="text" formControlName="firstName">
+    </label>
+    @if (f.firstName.touched && f.firstName.errors?.['required']) {
+      <small class="error">Podaj imię.</small>
+    }
+    @if (f.firstName.touched && (f.firstName.errors?.['minlength'] || f.firstName.errors?.['maxlength'])) {
+      <small class="error">Imię musi mieć od 2 do 50 znaków.</small>
+    }
 
+    <label>
+      Nazwisko:
+      <input type="text" formControlName="lastName">
+    </label>
+    @if (f.lastName.touched && f.lastName.invalid) {
+      <small class="error">Podaj poprawne nazwisko (2–50 znaków).</small>
+    }
+
+    <label>
+      Adres:
+      <input type="text" formControlName="adres">
+    </label>
+    @if (f.adres.touched && f.adres.invalid) {
+      <small class="error">Podaj adres (5–100 znaków).</small>
+    }
+
+    <label>
+      Metoda płatności:
+      <select formControlName="paymentMethod">
+        <option value="">Wybierz metodę</option>
+        <option value="card">Karta</option>
+        <option value="blik">BLIK</option>
+        <option value="transfer">Przelew</option>
+      </select>
+    </label>
+    @if (f.paymentMethod.touched && f.paymentMethod.invalid) {
+      <small class="error">Wybierz metodę płatności.</small>
+    }
+
+    @if (PaymentMethod === 'card') {
+      <label>
+        Numer karty (16 cyfr):
+        <input
+          type="text"
+          inputmode="numeric"
+          maxlength="16"
+          formControlName="cardCode"
+          placeholder="16 cyfr">
+      </label>
+      @if (f.cardCode.touched && f.cardCode.invalid) {
+        <small class="error">Wpisz dokładnie 16 cyfr.</small>
+      }
+    }
+
+    @if (PaymentMethod === 'blik') {
+      <label>
+        Kod BLIK (6 cyfr):
+        <input
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          formControlName="blikCode"
+          placeholder="6 cyfr">
+      </label>
+      @if (f.blikCode.touched && f.blikCode.invalid) {
+        <small class="error">Wpisz dokładnie 6 cyfr.</small>
+      }
+    }
+
+    @if (PaymentMethod === 'transfer') {
+      <p>Wybrano przelew bankowy.</p>
+    }
+
+    <button type="submit">Zamawiam</button>
+
+  </form>
+}
+
+@if (orderSubmitted) {
+  <div class="invoice">
+
+    <h2>Potwierdzenie zamówienia</h2>
+
+    <div class="invoice-info">
+      <div>
+        <h3>Sprzedawca</h3>
+        <p>My Shop</p>
+        <p>ul. Sklepowa 10</p>
+        <p>30-001 Kraków</p>
+      </div>
+
+      <div>
+        <h3>Nabywca</h3>
+        <p>{{ orderData.firstName }} {{ orderData.lastName }}</p>
+        <p>{{ orderData.adres }}</p>
+      </div>
+    </div>
+
+    <div class="invoice-details">
+      <h3>Szczegóły zamówienia</h3>
+
+      <div class="invoice-row">
+        <span>Metoda płatności:</span>
+        <strong>
+          @if (orderData.paymentMethod === 'card') {
+            Karta
+          } @else if (orderData.paymentMethod === 'blik') {
+            BLIK
+          } @else {
+            Przelew
+          }
+        </strong>
+      </div>
+
+      <div class="invoice-row total">
+        <span>RAZEM:</span>
+        <strong>{{ total | number:'1.2-2' }} zł</strong>
+      </div>
+    </div>
+
+    <div class="invoice-footer">
+      <p>Dziękujemy za zakupy!</p>
+    </div>
+  </div>
+}
