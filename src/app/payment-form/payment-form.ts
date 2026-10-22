@@ -31,12 +31,12 @@ export class PaymentForm {
   paymentForm = new FormGroup({
     firstName: new FormControl('', [
       Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(3),
       Validators.maxLength(50)
     ]),
     lastName: new FormControl('', [
       Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(3),
       Validators.maxLength(50)
     ]),
     adres: new FormControl('', [

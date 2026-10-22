@@ -1,8 +1,60 @@
-<h2>Lista Produktów</h2>
 
-@for (product of products; track product.id) {
-  <app-product-item
-    [product]="product"
-    (addToCart)="onAddToCart($event)">
-  </app-product-item>
-}
+<section class="products-gallery">
+
+  <h1>Wszystkie produkty</h1>
+
+  <div class="products-grid">
+
+    @for (item of products; track item.id) {
+
+      <article class="product-card">
+
+        <a
+          [routerLink]="['/produkt', item.id]"
+          class="product-details-link">
+
+          <img
+            [src]="item.image"
+            [alt]="item.name">
+
+          <h2>{{ item.name }}</h2>
+
+        </a>
+
+        <div class="rating">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <span>
+              {{ star <= item.rating ? '★' : '☆' }}
+            </span>
+          }
+
+          <span class="rating-count">
+            ({{ item.reviewsCount }} opinii)
+          </span>
+        </div>
+
+        <p class="price">{{ item.price }} zł</p>
+
+        <button
+          type="button"
+          class="add-to-cart-btn"
+          [class.added]="addedProductId === item.id"
+          (click)="onAddToCart(item)">
+
+          @if (addedProductId === item.id) {
+            <span class="success-icon">✓</span>
+            Dodano do koszyka!
+          } @else {
+            <span>🛒</span>
+            Dodaj do koszyka
+          }
+
+        </button>
+
+      </article>
+
+    }
+
+  </div>
+
+</section>

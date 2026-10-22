@@ -1,100 +1,46 @@
-<div class="cart">
+<div class="cart" [class.mini-cart]="mode === 'modal'">
 
-  <h2>
-    KOSZYK
-
-    <button mat-icon-button aria-label="Koszyk">
-      <mat-icon>shopping_cart</mat-icon>
-    </button>
-  </h2>
+  @if (mode === 'page') {
+    <h1>Twój koszyk</h1>
+  } @else {
+    <h2>Twój koszyk</h2>
+  }
 
   @if (cart.length === 0) {
-
-    <p class="empty">
-      Koszyk jest pusty.
-    </p>
-
+    <p class="empty">Twój koszyk jest pusty.</p>
   } @else {
-
     <div class="products">
-
-      @for (product of cart; track product.id) {
-
+      @for (product of cart; track $index) {
         <div class="cart-item">
-
-          <div class="product-info">
-
-            <strong>
-              {{ product.name }}
-            </strong>
-
-            <span>
-              {{ product.price }} zł / szt.
-            </span>
-
-          </div>
+          <span class="product-name">{{ product.name }}</span>
 
           <div class="quantity">
-
-            <button
-              mat-icon-button
-              (click)="decreaseQuantity($index)"
-              aria-label="Zmniejsz ilość">
-
-              <mat-icon>
-                remove
-              </mat-icon>
-
+            <button mat-icon-button (click)="decreaseQuantity($index)">
+              <mat-icon>remove</mat-icon>
             </button>
 
-            <span class="quantity-number">
-              {{ product.quantity }} szt.
-            </span>
+            <span class="quantity-number">{{ product.quantity }}</span>
 
-            <button
-              mat-icon-button
-              (click)="increaseQuantity($index)"
-              aria-label="Zwiększ ilość">
-
-              <mat-icon>
-                add
-              </mat-icon>
-
+            <button mat-icon-button (click)="increaseQuantity($index)">
+              <mat-icon>add</mat-icon>
             </button>
-
           </div>
 
-          <strong class="product-total">
+          <span class="product-total">
             {{ product.price * product.quantity }} zł
-          </strong>
+          </span>
 
-          <button
-            mat-button
-            color="warn"
-            (click)="removeProduct($index)">
-            Usuń
+          <button mat-icon-button (click)="removeProduct($index)">
+            <mat-icon>delete</mat-icon>
           </button>
-
         </div>
-
       }
-
     </div>
 
     <div class="separator"></div>
-
-    <div class="total">
-
-      <strong>
-        RAZEM
-      </strong>
-
-      <strong>
-        {{ getTotal() }} zł
-      </strong>
-
-    </div>
-
+    <h3 class="total">
+      <span>Suma:</span>
+      <span>{{ getTotal() }} zł</span>
+    </h3>
   }
-
 </div>

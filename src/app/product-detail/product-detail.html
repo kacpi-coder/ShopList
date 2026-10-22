@@ -1,89 +1,59 @@
-@if (product) {
 
-  <div class="product-detail">
+<section class="products-gallery">
 
-    <div class="product-image">
+  <h1>Wszystkie produkty</h1>
 
-      <img
-        [src]="product.image"
-        [alt]="product.name">
+  <div class="products-grid">
 
-    </div>
+    @for (item of products; track item.id) {
 
-    <div class="product-info">
-
-      <h1>
-        {{ product.name }}
-      </h1>
-
-      <div class="rating">
-
-        @for (star of [1, 2, 3, 4, 5]; track star) {
-
-          <span>
-            {{ star <= product.rating ? '★' : '☆' }}
-          </span>
-
-        }
-
-      </div>
-
-      <p class="description">
-        {{ product.description }}
-      </p>
-
-      <p class="price">
-        {{ product.price }} zł
-      </p>
-
-   <button (click)="addToCart()">
-  Dodaj do koszyka
-</button>
-
-
-    </div>
-
-  </div>
-
-
-  <section class="other-products">
-
-    <h2>
-      Pozostałe produkty
-    </h2>
-
-    <div class="carousel">
-
-      @for (item of otherProducts; track item.id) {
+      <article class="product-card">
 
         <a
           [routerLink]="['/produkt', item.id]"
-          class="other-product">
+          class="product-details-link">
 
-          <h3>
-            {{ item.name }}
-          </h3>
+          <img
+            [src]="item.image"
+            [alt]="item.name">
 
-          <p>
-            {{ item.price }} zł
-          </p>
+          <h2>{{ item.name }}</h2>
 
         </a>
 
-      }
+        <div class="rating">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <span>
+              {{ star <= item.rating ? '★' : '☆' }}
+            </span>
+          }
 
-    </div>
+          <span class="rating-count">
+            ({{ item.reviewsCount }} opinii)
+          </span>
+        </div>
 
-  </section>
+        <p class="price">{{ item.price }} zł</p>
 
-} @else {
+        <button
+          type="button"
+          class="add-to-cart-btn"
+          [class.added]="addedProductId === item.id"
+          (click)="onAddToCart(item)">
 
-  <div class="not-found">
+          @if (addedProductId === item.id) {
+            <span class="success-icon">✓</span>
+            Dodano do koszyka!
+          } @else {
+            Dodaj do koszyka
+          }
 
-    <h2>
-      Nie znaleziono produktu
-    </h2>
+        </button>
+
+      </article>
+
+    }
 
   </div>
 
-}
+</section>

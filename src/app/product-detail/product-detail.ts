@@ -1,34 +1,33 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+
+import { Component, inject, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ProductItem } from '../product-item/product-item';
+import { CartService } from '../cart-service';
 
 @Component({
-  selector: 'app-product-detail',
-  imports: [RouterLink],
+  selector: 'app-product-list',
+  imports: [ProductItem, RouterLink],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss'
 })
 export class ProductDetail {
 
-  private route = inject(ActivatedRoute);
-
-  productId = Number(
-    this.route.snapshot.paramMap.get('id')
-  );
+   private readonly cartService = inject(CartService);
 
   products = [
     {
       id: 1,
       name: 'Klawiatura',
       price: 199,
-      description: 'Wygodna klawiatura do codziennej pracy i grania.',
+      reviewsCount: 17,
       image: '/klawiatura.webp',
-      rating: 4.5
+      rating: 3
     },
     {
       id: 2,
       name: 'Mysz',
       price: 99,
-      description: 'Precyzyjna mysz komputerowa z ergonomicznym kształtem.',
+      reviewsCount: 48,
       image: '/myszka.jpg',
       rating: 4
     },
@@ -36,7 +35,7 @@ export class ProductDetail {
       id: 3,
       name: 'Monitor',
       price: 899,
-      description: 'Nowoczesny monitor o wysokiej jakości obrazu.',
+      reviewsCount: 35,
       image: '/monitor.jpg',
       rating: 5
     },
@@ -44,50 +43,62 @@ export class ProductDetail {
       id: 4,
       name: 'Słuchawki',
       price: 149,
-      description: 'Wygodne słuchawki zapewniające dobry dźwięk.',
+      reviewsCount: 247,
       image: '/sluchawki.webp',
-      rating: 4.5
+      rating: 4
+    },
+    {
+      id: 5,
+      name: 'Fotel Gamingowy',
+      price: 579,
+      reviewsCount: 452,
+      image: '/fotel.webp',
+      rating: 5
+    },
+      {
+      id: 6,
+      name: 'Stojak na pada i słuchawki',
+      price: 215,
+      reviewsCount: 1046,
+      image: '/stoajk.jpg',
+      rating: 4
     }
   ];
 
-  product = this.products.find(
-    product => product.id === this.productId
-  );
+  addToCart = output<any>();
 
-  otherProducts = this.products.filter(
-    product => product.id !== this.productId
-  );
+  addedProductId: number | null = null;
 
-  addToCart() {
-
-    if (!this.product) {
-      return;
-    }
-
+  onAddToCart(product: any) {
     const cart = JSON.parse(
       localStorage.getItem('cart') || '[]'
     );
 
     const existingProduct = cart.find(
-      (item: any) => item.id === this.product!.id
+      (item: any) => item.id === product.id
     );
 
     if (existingProduct) {
-
       existingProduct.quantity += 1;
-
     } else {
-
       cart.push({
-        ...this.product,
+        ...product,
         quantity: 1
       });
-
     }
 
-    localStorage.setItem(
-      'cart',
-      JSON.stringify(cart)
-    );
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    this.addToCart.emit(product);
+
+    this.addedProductId = product.id;
+
+this.cartService.loadCart();
+
+    setTimeout(() => {
+      if (this.addedProductId === product.id) {
+        this.addedProductId = null;
+      }
+    }, 1600);
   }
 }

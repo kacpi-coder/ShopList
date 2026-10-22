@@ -1,32 +1,32 @@
-<header class="header">
 
+<header class="header">
   <a routerLink="/" class="logo">
     SKLEP
   </a>
 
   <nav class="navigation">
-
-    <a
-      routerLink="/"
-      routerLinkActive="active">
+    <a routerLink="/" routerLinkActive="active">
       Strona główna
     </a>
 
-    <a
-      routerLink="/lista-produktow"
-      routerLinkActive="active">
+    <a routerLink="/lista-produktow" routerLinkActive="active">
       Produkty
     </a>
 
-    <a
-      routerLink="/koszyk"
-      routerLinkActive="active">
-      Koszyk
+    <div class="cart-menu">
+      <a routerLink="/koszyk" routerLinkActive="active">
+        Koszyk
+      </a>
+
+      <div class="cart-preview">
+        <app-cart mode="modal"></app-cart>
+      </div>
+    </div>
+
+    <a routerLink="/payment-form" routerLinkActive="active">
+      Płatność
     </a>
-
-    <a routerLink="/payment-form" routerLinkActive="active"> Płatność</a>
   </nav>
-
 </header>
 
 <main>
