@@ -1,87 +1,63 @@
 
-<section class="products-gallery">
 
+<section class="products-gallery">
   <h1>Wszystkie produkty</h1>
 
-  <div class="carousel">
+  <swiper-container
+    slides-per-view="3"
+    space-between="20"
+    navigation="true"
+    pagination="true"
+    [breakpoints]="{
+      '0': { slidesPerView: 1 },
+      '600': { slidesPerView: 2 },
+      '900': { slidesPerView: 3 }
+    }">
 
-    <button
-      type="button"
-      class="carousel-arrow"
-      (click)="prevSlide()"
-      [disabled]="currentIndex === 0"
-      aria-label="Poprzednie produkty">
-      &#10094;
-    </button>
+    @for (item of products; track item.id) {
+      <swiper-slide>
+        <article class="product-card">
 
-    <div class="carousel-window">
+          <a
+            [routerLink]="['/produkt', item.id]"
+            class="product-details-link">
 
-      <div
-        class="carousel-track"
-        [style.transform]="'translateX(-' + currentIndex * (100 / 3) + '%)'">
+            <img [src]="item.image" [alt]="item.name">
+            <h2>{{ item.name }}</h2>
+          </a>
 
-        @for (item of products; track item.id) {
-
-          <article class="product-card">
-
-            <a
-              [routerLink]="['/produkt', item.id]"
-              class="product-details-link">
-
-              <img
-                [src]="item.image"
-                [alt]="item.name">
-
-              <h2>{{ item.name }}</h2>
-
-            </a>
-
-            <div class="rating">
-              @for (star of [1, 2, 3, 4, 5]; track star) {
-                <span>
-                  {{ star <= item.rating ? '★' : '☆' }}
-                </span>
-              }
-
-              <span class="rating-count">
-                ({{ item.reviewsCount }} opinii)
+          <div class="rating">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <span>
+                {{ star <= item.rating ? '★' : '☆' }}
               </span>
-            </div>
+            }
 
-            <p class="price">{{ item.price }} zł</p>
+            <span class="rating-count">
+              ({{ item.reviewsCount }} opinii)
+            </span>
+          </div>
 
-            <button
-              type="button"
-              class="add-to-cart-btn"
-              [class.added]="addedProductId === item.id"
-              (click)="onAddToCart(item)">
+          <p class="price">{{ item.price }} zł</p>
 
-              @if (addedProductId === item.id) {
-                <span class="success-icon">✓</span>
-                Dodano do koszyka!
-              } @else {
-                Dodaj do koszyka
-              }
+          <button
+            type="button"
+            class="add-to-cart-btn"
+            [class.added]="addedProductId === item.id"
+            (click)="onAddToCart(item)">
 
-            </button>
+            @if (addedProductId === item.id) {
+              <span class="success-icon">✓</span>
+              Dodano do koszyka!
+            } @else {
+              Dodaj do koszyka
+            }
 
-          </article>
+          </button>
 
-        }
+        </article>
+      </swiper-slide>
+    }
 
-      </div>
-
-    </div>
-
-    <button
-      type="button"
-      class="carousel-arrow"
-      (click)="nextSlide()"
-      [disabled]="currentIndex >= products.length - 3"
-      aria-label="Następne produkty">
-      &#10095;
-    </button>
-
-  </div>
-
+  </swiper-container>
 </section>

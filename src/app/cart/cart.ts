@@ -1,65 +1,45 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
+import { CartService } from '../cart-service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule
-  ],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
-export class Cart {
-
+export class Cart implements OnDestroy {
   @Input() mode: 'page' | 'modal' = 'page';
 
   cart: any[] = [];
+  private subscription: Subscription;
 
-  constructor() {
-    this.loadCart();
-  }
-
-  loadCart() {
-    this.cart = JSON.parse(
-      localStorage.getItem('cart') || '[]'
-    );
+  constructor(private cartService: CartService) {
+    this.subscription = this.cartService.cart$.subscribe(cart => {
+      this.cart = cart;
+    });
   }
 
   increaseQuantity(index: number) {
-    this.cart[index].quantity += 1;
-    this.saveCart();
+    this.cartService.increaseQuantity(index);
   }
 
   decreaseQuantity(index: number) {
-    if (this.cart[index].quantity > 1) {
-      this.cart[index].quantity -= 1;
-    } else {
-      this.cart.splice(index, 1);
-    }
-
-    this.saveCart();
+    this.cartService.decreaseQuantity(index);
   }
 
   removeProduct(index: number) {
-    this.cart.splice(index, 1);
-    this.saveCart();
-  }
-
-  saveCart() {
-    localStorage.setItem(
-      'cart',
-      JSON.stringify(this.cart)
-    );
+    this.cartService.removeProduct(index);
   }
 
   getTotal(): number {
-    return this.cart.reduce(
-      (sum, product) =>
-        sum + product.price * product.quantity,
-      0
-    );
+    return this.cartService.getTotal();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
