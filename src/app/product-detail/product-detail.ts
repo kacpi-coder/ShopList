@@ -101,4 +101,24 @@ this.cartService.loadCart();
       }
     }, 1600);
   }
+
+
+currentIndex = 0;
+
+nextSlide() {
+  const maxIndex = Math.max(0, this.products.length - 3);
+
+  if (this.currentIndex < maxIndex) {
+    this.currentIndex++;
+  }
+}
+
+prevSlide() {
+  if (this.currentIndex > 0) {
+    this.currentIndex--;
+  }
+}
+
+
+
 }
