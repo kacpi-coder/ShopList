@@ -1,0 +1,21 @@
+<section class="product-info">
+  @if (product) {
+    <a routerLink="/lista-produktow" class="back-btn">Powrót do produktów</a>
+
+    <div class="product-image">
+  <span class="iiz">
+    <img [src]="product.image" [alt]="product.name">
+  </span>
+</div>
+    <div class="product-content">
+      <h1>{{ product.name }}</h1>
+      <p>{{ product.description }}</p>
+      <h2>{{ product.price }} zł</h2>
+    </div>
+  } @else {
+    <div class="not-found">
+      <h1>Nie znaleziono produktu</h1>
+      <a routerLink="/lista-produktow">Powrót do produktów</a>
+    </div>
+  }
+</section>
